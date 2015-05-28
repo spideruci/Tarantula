@@ -1,3 +1,4 @@
+package org.spideruci.tarantula;
 /*******************************************************************************
  * Copyright (c) 2010 James A. Jones jim@jamesajones.net
  ******************************************************************************/
@@ -69,22 +70,38 @@ import java.util.zip.GZIPOutputStream;
  * @author James A. Jones jim@jamesajones.net
  * 
  */
-public class TarantulaSuspiciousnessCalculation implements Externalizable {
+public class TarantulaData implements Externalizable {
 
-	private boolean[][] M; // coverage matrix -- [test][stmt]
+  /**
+   * coverage matrix -- [test][stmt]
+   */
+	private boolean[][] M;
 
-	private boolean[] F; // failing test cases -- [test]
+	/**
+	 * failing test cases -- [test]
+	 */
+	private boolean[] F;
 
-	private boolean[] L; // live test cases -- [test]
+	/**
+	 * live test cases -- [test]
+	 */
+	private boolean[] L;
 
-	private int[] S; // fault numbers -- [stmt]
+	/**
+	 * fault numbers -- [stmt]
+	 */
+	private int[] S;
 
-	private boolean[] C; // coverable statements -- [stmt]
+	/**
+	 * coverable statements -- [stmt]
+	 */
+	private boolean[] C;
 
-	private boolean[] B; /*
-						 * bad coverage (no coverage information, usually due to
-						 * a segmentation fault) -- [test]
-						 */
+	/**
+	 * bad coverage (no coverage information, usually due to
+	 * a segmentation fault) -- [test]
+	 */
+	private boolean[] B; 
 
 	private int numOrigTests;
 
@@ -120,10 +137,14 @@ public class TarantulaSuspiciousnessCalculation implements Externalizable {
 
 	private String directory; /* the directory to store the coverage matrix file */
 
-	public TarantulaSuspiciousnessCalculation() {
+	public TarantulaData() {
 	}
 
-	public TarantulaSuspiciousnessCalculation(boolean[][] M) {
+	/**
+	 * @param M 
+	 * coverage matrix -- [test][stmt]
+	 */
+	public TarantulaData(boolean[][] M) {
 		this.M = M;
 
 		numOrigTests = M.length;
@@ -147,13 +168,15 @@ public class TarantulaSuspiciousnessCalculation implements Externalizable {
 
 	public void setF(boolean[] F) {
 		this.F = F;
-
-		calculateOrigFailAndPass();
 	}
 
 	public void setL(boolean[] L) {
 		this.L = L;
 	}
+	
+  public void setB(boolean[] B) {
+    this.B = B;
+  }
 
 	public void setS(int[] S) {
 		this.S = S;
@@ -163,17 +186,42 @@ public class TarantulaSuspiciousnessCalculation implements Externalizable {
 				numFaults = S[i];
 		}
 	}
-
+	
+	/**
+	 * @return coverage matrix -- [test][stmt]
+	 */
 	public boolean[][] getM() {
 		return M;
 	}
 
+	/**
+	 * @return live test cases -- [test]
+	 */
 	public boolean[] getL() {
 		return L;
 	}
 
+	/**
+	 * @return failing test cases -- [test]
+	 */
 	public boolean[] getF() {
 		return F;
+	}
+	
+	/**
+	 * @return 
+	 * bad coverage (no coverage information, usually due to
+   * a segmentation fault) -- [test]
+	 */
+	public boolean[] getB() {
+    return this.B;
+  }
+	
+	/**
+	 * @return coverable statements -- [stmt]
+	 */
+	public boolean[] getC() {
+	  return this.C;
 	}
 
 	public int[] getPassOnStmt() {
@@ -182,14 +230,6 @@ public class TarantulaSuspiciousnessCalculation implements Externalizable {
 
 	public int[] getFailOnStmt() {
 		return failOnStmt;
-	}
-
-	public void compute() {
-		calculateBadTestCoverage();
-		calculateTotalLiveFailAndPass();
-		calculatePassOnStmtAndFailOnStmt();
-		calculatePassRatioAndFailRatio();
-		calculateSuspiciousnessAndConfidence();
 	}
 
 	public double[] getSuspiciousness() {
@@ -252,6 +292,17 @@ public class TarantulaSuspiciousnessCalculation implements Externalizable {
 		}
 		return c;
 	}
+	
+	
+	public void compute() {
+    calculateBadTestCoverage();
+    calculateOrigFailAndPass();
+    calculateTotalLiveFailAndPass();
+    calculatePassOnStmtAndFailOnStmt();
+    calculatePassRatioAndFailRatio();
+    calculateSuspiciousnessAndConfidence();
+  }
+	
 
 	private void calculateTotalLiveFailAndPass() {
 		totalLiveFail = 0;
@@ -758,5 +809,4 @@ public class TarantulaSuspiciousnessCalculation implements Externalizable {
 		compute();
 
 	}
-
 }

@@ -295,133 +295,22 @@ public class TarantulaData implements Externalizable {
 	
 	
 	public void compute() {
-    calculateBadTestCoverage();
-    calculateOrigFailAndPass();
-    calculateTotalLiveFailAndPass();
-    calculatePassOnStmtAndFailOnStmt();
-    calculatePassRatioAndFailRatio();
-    calculateSuspiciousnessAndConfidence();
+	  TarantulaFaultLocalizer localizer = new TarantulaFaultLocalizer();
+	  boolean isBCalculated = false;
+	  localizer.compute(this, isBCalculated);
   }
 	
-
-	private void calculateTotalLiveFailAndPass() {
-		totalLiveFail = 0;
-		totalLivePass = 0;
-		for (int i = 0; i < numOrigTests; i++) {
-			if (L[i]) {
-				if (!B[i]) {
-					if (F[i])
-						totalLiveFail++;
-					else
-						totalLivePass++;
-				}
-			}
-		}
-		// System.out.println("livepass="+ totalLivePass + "\tlivefail=" +
-		// totalLiveFail + "\n");
-	}
-
-	private boolean isBCalculated = false;
-
-	private void calculateBadTestCoverage() {
-		if (isBCalculated)
-			return;
-		B = new boolean[numOrigTests];
-		for (int i = 0; i < numOrigTests; i++) {
-			B[i] = true;
-			for (int j = 0; j < numStmts; j++) {
-				if (M[i][j]) { /*
-								 * if there is a statement covered for this test
-								 * case
-								 */
-					B[i] = false; // this is not a bad test case
-					break; // no need to look further at this test case
-				}
-			}
-		}
-		isBCalculated = true;
-	}
-
-	private void calculateOrigFailAndPass() {
-		totalOrigFail = 0;
-		totalOrigPass = 0;
-		for (int i = 0; i < numOrigTests; i++) {
-			if (F[i])
-				totalOrigFail++;
-			else
-				totalOrigPass++;
-		}
-		// System.out.println("origpass="+ totalOrigPass + "\torigfail=" +
-		// totalOrigFail + "\n");
-	}
-
-	private void calculatePassOnStmtAndFailOnStmt() {
-
-		passOnStmt = new int[numStmts];
-		failOnStmt = new int[numStmts];
-
-		// first only consider live test cases
-		for (int i = 0; i < numOrigTests; i++) {
-			if (!B[i]) { // if this isn't a dead test case (seg fault)
-				if (L[i]) { // if this test case is live
-					for (int j = 0; j < numStmts; j++) {
-						if (C[j]) {
-							if (M[i][j]) {
-								if (F[i])
-									failOnStmt[j]++;
-								else
-									passOnStmt[j]++;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private void calculatePassRatioAndFailRatio() {
-
-		passRatio = new double[numStmts];
-		failRatio = new double[numStmts];
-
-		for (int i = 0; i < numStmts; i++) {
-			// System.out.print("line " + i + "\t");
-			if (totalLivePass == 0) {
-				passRatio[i] = 0d;
-			} else {
-				passRatio[i] = (double) passOnStmt[i] / (double) totalLivePass;
-				// System.out.print("numPass=" + passOnStmt[i] + "\t");
-			}
-
-			if (totalLiveFail == 0) {
-				failRatio[i] = 0d;
-			} else {
-				failRatio[i] = (double) failOnStmt[i] / (double) totalLiveFail;
-				// System.out.print("numFail=" + failOnStmt[i] + "\t");
-			}
-			// System.out.println();
-		}
-	}
-
-	private void calculateSuspiciousnessAndConfidence() {
-		suspiciousness = new double[numStmts];
-		confidence = new double[numStmts];
-
-		for (int i = 0; i < numStmts; i++) {
-			if ((totalLiveFail == 0) && (totalLivePass == 0)) {
-				suspiciousness[i] = -1d;
-				confidence[i] = -1d;
-			} else if ((failRatio[i] == 0d) && (passRatio[i] == 0d)) {
-				suspiciousness[i] = -1d;
-				confidence[i] = -1d;
-			} else {
-				suspiciousness[i] = failRatio[i]
-						/ (failRatio[i] + passRatio[i]);
-				confidence[i] = Math.max(failRatio[i], passRatio[i]);
-			}
-		}
-	}
-
+  public void calculateOrigFailAndPass() {
+    totalOrigFail = 0;
+    totalOrigPass = 0;
+    for (int i = 0; i < numOrigTests; i++) {
+      if (F[i])
+        totalOrigFail++;
+      else
+        totalOrigPass++;
+    }
+  }
+	
 	/** ******** Externalizable required methods ******************* */
 	public void writeExternal(ObjectOutput obj_out) throws IOException {
 

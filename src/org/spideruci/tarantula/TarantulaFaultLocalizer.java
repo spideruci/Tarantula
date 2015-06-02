@@ -20,26 +20,26 @@ public class TarantulaFaultLocalizer {
     boolean[] F = data.getF();
     
     @SuppressWarnings("unused")
-    int[] origFailAndPass = calculateOrigFailAndPass(numOrigTests, F);
+    PassFailPair<Integer> origTests = calculateOrigFailAndPass(numOrigTests, F);
     
     boolean[] L = data.getL();
     boolean[] B = data.getB();
-    int[] totalLivePassFail = 
+    PassFailPair<Integer> totalLiveTests = 
         calculateTotalLiveFailAndPass(numOrigTests, B, L, F);
-    int totalLivePass = totalLivePassFail[PASS];
-    int totalLiveFail = totalLivePassFail[FAIL];
+    int totalLivePass = totalLiveTests.pass();
+    int totalLiveFail = totalLiveTests.fail();
     
     boolean[] C = data.getC();
-    int[][] passAndFailOnStmt = 
+    PassFailPair<int[]> passAndFailOnStmt = 
         calculatePassOnStmtAndFailOnStmt(numStmts, numOrigTests, B, L, C, M, F);
-    int[] passOnStmt = passAndFailOnStmt[PASS];
-    int[] failOnStmt = passAndFailOnStmt[FAIL];
+    int[] passOnStmt = passAndFailOnStmt.pass();
+    int[] failOnStmt = passAndFailOnStmt.fail();
     
-    double[][] passAndFailRatio = 
+    PassFailPair<double[]> passAndFailRatio = 
         calculatePassRatioAndFailRatio(
             numStmts, totalLiveFail, totalLiveFail, passOnStmt, failOnStmt);
-    double[] passRatio = passAndFailRatio[PASS];
-    double[] failRatio = passAndFailRatio[FAIL];
+    double[] passRatio = passAndFailRatio.pass();
+    double[] failRatio = passAndFailRatio.fail();
     
     double[][] suspiciousnessAndConfidence = 
         calculateSuspiciousnessAndConfidence(
@@ -48,44 +48,40 @@ public class TarantulaFaultLocalizer {
     return suspiciousnessAndConfidence;
   }
 
-  private boolean[] calculateBadTestCoverage(
+  boolean[] calculateBadTestCoverage(
       int numStmts, int numOrigTests, boolean[][] M) {
     boolean[] B = new boolean[numOrigTests];
     for (int i = 0; i < numOrigTests; i++) {
       B[i] = true;
       for (int j = 0; j < numStmts; j++) {
-        if (M[i][j]) { /*
-                 * if there is a statement covered for this test
-                 * case
-                 */
-          B[i] = false; // this is not a bad test case
-          break; // no need to look further at this test case
-        }
+        if (!M[i][j]) continue; 
+        // if there is a statement covered for this test case
+        B[i] = false; // this is not a bad test case
+        break; // no need to look further at this test case
       }
     }
     return B;
   }
   
-  private int[] calculateTotalLiveFailAndPass(
+  PassFailPair<Integer> calculateTotalLiveFailAndPass(
       int numOrigTests, boolean[] B, boolean[] L, boolean[] F) {
     int totalLiveFail = 0;
     int totalLivePass = 0;
     for (int i = 0; i < numOrigTests; i++) {
-      if (L[i]) {
-        if (!B[i]) {
-          if (F[i])
-            totalLiveFail++;
-          else
-            totalLivePass++;
-        }
+      if(!L[i]) continue;
+      if(B[i]) continue;
+      if (F[i]) {
+        totalLiveFail++;
+      }
+      else {
+        totalLivePass++;
       }
     }
-    // System.out.println("livepass="+ totalLivePass + "\tlivefail=" +
-    // totalLiveFail + "\n");
-    return new int[] { totalLivePass, totalLiveFail };
+    return new PassFailPair<Integer>( totalLivePass, totalLiveFail );
   }
 
-  private int[] calculateOrigFailAndPass(int numOrigTests, boolean[] F) {
+  PassFailPair<Integer> calculateOrigFailAndPass(
+      int numOrigTests, boolean[] F) {
     int totalOrigFail = 0;
     int totalOrigPass = 0;
     for (int i = 0; i < numOrigTests; i++) {
@@ -94,13 +90,11 @@ public class TarantulaFaultLocalizer {
       else
         totalOrigPass++;
     }
-    // System.out.println("origpass="+ totalOrigPass + "\torigfail=" +
-    // totalOrigFail + "\n");
     
-    return new int[] {totalOrigPass, totalOrigFail};
+    return new PassFailPair<Integer>(totalOrigPass, totalOrigFail);
   }
 
-  private int[][] calculatePassOnStmtAndFailOnStmt(
+  PassFailPair<int[]> calculatePassOnStmtAndFailOnStmt(
       int numStmts, int numOrigTests,
       boolean[] B, boolean[] L, boolean[] C, boolean[][] M, boolean[] F) {
 
@@ -109,26 +103,22 @@ public class TarantulaFaultLocalizer {
 
     // first only consider live test cases
     for (int i = 0; i < numOrigTests; i++) {
-      if (!B[i]) { // if this isn't a dead test case (seg fault)
-        if (L[i]) { // if this test case is live
-          for (int j = 0; j < numStmts; j++) {
-            if (C[j]) {
-              if (M[i][j]) {
-                if (F[i])
-                  failOnStmt[j]++;
-                else
-                  passOnStmt[j]++;
-              }
-            }
-          }
-        }
+      if (B[i]) continue; // if this isn't a dead test case (seg fault)
+      if (L[i]) continue; // if this test case is live
+      for (int j = 0; j < numStmts; j++) {
+        if (!C[j]) continue;
+        if(!M[i][j]) continue;
+        if (F[i])
+          failOnStmt[j]++;
+        else
+          passOnStmt[j]++;
       }
     }
     
-    return new int[][] { passOnStmt, failOnStmt };
+    return new PassFailPair<int[]>(passOnStmt, failOnStmt);
   }
 
-  private double[][] calculatePassRatioAndFailRatio(
+  PassFailPair<double[]> calculatePassRatioAndFailRatio(
       int numStmts, int totalLivePass, int totalLiveFail,
       int[] passOnStmt, int[] failOnStmt) {
 
@@ -153,10 +143,10 @@ public class TarantulaFaultLocalizer {
       // System.out.println();
     }
     
-    return new double[][] { passRatio, failRatio };
+    return new PassFailPair<double[]>(passRatio, failRatio);
   }
 
-  private double[][] calculateSuspiciousnessAndConfidence(
+  double[][] calculateSuspiciousnessAndConfidence(
       int numStmts, int totalLivePass, int totalLiveFail,
       double[] passRatio, double[] failRatio) {
     double[] suspiciousness = new double[numStmts];

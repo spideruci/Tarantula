@@ -55,8 +55,8 @@ public class TarantulaFaultLocalizer {
       B[i] = true;
       for (int j = 0; j < numStmts; j++) {
         if (!M[i][j]) continue; 
-        // if there is a statement covered for this test case
-        B[i] = false; // this is not a bad test case
+        // there is a statement covered for this test case
+        B[i] = false; // this is not a bad test case, because it covered at least 1 test.
         break; // no need to look further at this test case
       }
     }

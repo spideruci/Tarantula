@@ -103,8 +103,8 @@ public class TarantulaFaultLocalizer {
 
     // first only consider live test cases
     for (int i = 0; i < numOrigTests; i++) {
-      if (B[i]) continue; // if this isn't a dead test case (seg fault)
-      if (L[i]) continue; // if this test case is live
+      if (B[i]) continue; // if this is a dead test case (seg fault)
+      if (!L[i]) continue; // if this test case is not live
       for (int j = 0; j < numStmts; j++) {
         if (!C[j]) continue;
         if(!M[i][j]) continue;

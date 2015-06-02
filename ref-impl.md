@@ -1,3 +1,10 @@
+# Tarantual - Ref Implementation
+
+The Tarantual fault localization implementation is based on the following reference implmentation.
+
+**WARNING: UNDER NO CIRCUMSTANCE IS FILE TO BE CHANGED!!**
+
+```java
 /*******************************************************************************
  * Copyright (c) 2010 James A. Jones jim@jamesajones.net
  ******************************************************************************/
@@ -760,3 +767,4 @@ public class TarantulaSuspiciousnessCalculation implements Externalizable {
 	}
 
 }
+```

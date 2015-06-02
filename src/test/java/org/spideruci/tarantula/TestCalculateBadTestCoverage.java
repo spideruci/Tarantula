@@ -4,14 +4,11 @@ import static org.junit.Assert.*;
 import static org.spideruci.hamcrest.primitive.IsBooleanArrayContaining.*;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.CombinableMatcher.both;
-
 import static org.spideruci.tarantula.MatrixStubs.*;
 
-
-import org.junit.Ignore;
 import org.junit.Test;
 
-public class TarantulaFaultLocalizerTest {
+public class TestCalculateBadTestCoverage {
 
   @Test
   public void expect_NoBadTests_When_EachTestCovers_AtleastOneStmt() {
@@ -54,17 +51,4 @@ public class TarantulaFaultLocalizerTest {
     //then
     assertThat(B, both(hasFalse()).and(hasTrue()));
   }
-  
-  @Test @Ignore
-  public void testCalculatePassRatioAndFailRatio() {
-    fail("Not yet implemented");
-  }
-
-  @Test @Ignore
-  public void testCalculateSuspiciousnessAndConfidence() {
-    fail("Not yet implemented");
-  }
-  
-
-
 }

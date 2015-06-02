@@ -29,4 +29,13 @@ public final class MatrixStubs {
     }
     return array;
   }
+  
+  public static double[] getSimpleUniformDoubleArray(
+      double uniformValue, int size) {
+    double[] array = new double[size];
+    for(int i = 0; i < size; i += 1) {
+      array[i] = uniformValue;
+    }
+    return array;
+  }
 }

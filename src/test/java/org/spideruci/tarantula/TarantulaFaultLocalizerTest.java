@@ -54,12 +54,7 @@ public class TarantulaFaultLocalizerTest {
     //then
     assertThat(B, both(hasFalse()).and(hasTrue()));
   }
-
-  @Test @Ignore
-  public void testCalculatePassOnStmtAndFailOnStmt() {
-    fail("Not yet implemented");
-  }
-
+  
   @Test @Ignore
   public void testCalculatePassRatioAndFailRatio() {
     fail("Not yet implemented");

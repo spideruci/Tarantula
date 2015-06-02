@@ -20,4 +20,13 @@ public final class MatrixStubs {
     }
     return array;
   }
+  
+  public static int[] getSimpleUniformIntArray(
+      int uniformValue, int size) {
+    int[] array = new int[size];
+    for(int i = 0; i < size; i += 1) {
+      array[i] = uniformValue;
+    }
+    return array;
+  }
 }

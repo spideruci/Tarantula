@@ -1,6 +1,7 @@
 package org.spideruci.tarantula;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.spideruci.hamcrest.primitive.EveryInt.*;
 import static org.spideruci.tarantula.MatrixStubs.*;
 
@@ -38,8 +39,8 @@ public class TestCalculatePassOnStmtAndFailOnStmt {
         localizer.calculatePassOnStmtAndFailOnStmt(
             numStmts, numTests, B, L, null, null, null);
     //then
-    assertThat(pair.pass(), everyInt(0));
-    assertThat(pair.fail(), everyInt(0));
+    assertThat(pair.pass(), everyInt(equalTo(0)));
+    assertThat(pair.fail(), everyInt(equalTo(0)));
   }
   
   @Test
@@ -55,8 +56,8 @@ public class TestCalculatePassOnStmtAndFailOnStmt {
         localizer.calculatePassOnStmtAndFailOnStmt(
             numStmts, numTests, B, L, null, null, null);
     //then
-    assertThat(pair.pass(), everyInt(0));
-    assertThat(pair.fail(), everyInt(0));
+    assertThat(pair.pass(), everyInt(equalTo(0)));
+    assertThat(pair.fail(), everyInt(equalTo(0)));
   }
   
   @Test
@@ -72,8 +73,8 @@ public class TestCalculatePassOnStmtAndFailOnStmt {
         localizer.calculatePassOnStmtAndFailOnStmt(
             numStmts, numTests, B, L, null, null, null);
     //then
-    assertThat(pair.pass(), everyInt(0));
-    assertThat(pair.fail(), everyInt(0));
+    assertThat(pair.pass(), everyInt(equalTo(0)));
+    assertThat(pair.fail(), everyInt(equalTo(0)));
   }
   
   @Test
@@ -90,8 +91,8 @@ public class TestCalculatePassOnStmtAndFailOnStmt {
         localizer.calculatePassOnStmtAndFailOnStmt(
             numStmts, numTests, B, L, C, null, null);
     //then
-    assertThat(pair.pass(), everyInt(0));
-    assertThat(pair.fail(), everyInt(0));
+    assertThat(pair.pass(), everyInt(equalTo(0)));
+    assertThat(pair.fail(), everyInt(equalTo(0)));
   }
   
   @Test
@@ -109,8 +110,8 @@ public class TestCalculatePassOnStmtAndFailOnStmt {
         localizer.calculatePassOnStmtAndFailOnStmt(
             numStmts, numTests, B, L, C, M, null);
     //then
-    assertThat(pair.pass(), everyInt(0));
-    assertThat(pair.fail(), everyInt(0));
+    assertThat(pair.pass(), everyInt(equalTo(0)));
+    assertThat(pair.fail(), everyInt(equalTo(0)));
   }
   
   @Test
@@ -129,7 +130,7 @@ public class TestCalculatePassOnStmtAndFailOnStmt {
         localizer.calculatePassOnStmtAndFailOnStmt(
             numStmts, numTests, B, L, C, M, F);
     //then
-    assertThat(pair.fail(), everyInt(0));
+    assertThat(pair.fail(), everyInt(equalTo(0)));
   }
   
   @Test
@@ -148,7 +149,7 @@ public class TestCalculatePassOnStmtAndFailOnStmt {
         localizer.calculatePassOnStmtAndFailOnStmt(
             numStmts, numTests, B, L, C, M, F);
     //then
-    assertThat(pair.pass(), everyInt(numTests));
+    assertThat(pair.pass(), everyInt(equalTo(numTests)));
   }
   
   @Test
@@ -167,7 +168,7 @@ public class TestCalculatePassOnStmtAndFailOnStmt {
         localizer.calculatePassOnStmtAndFailOnStmt(
             numStmts, numTests, B, L, C, M, F);
     //then
-    assertThat(pair.pass(), everyInt(0));
+    assertThat(pair.pass(), everyInt(equalTo(0)));
   }
   
   @Test
@@ -186,7 +187,7 @@ public class TestCalculatePassOnStmtAndFailOnStmt {
         localizer.calculatePassOnStmtAndFailOnStmt(
             numStmts, numTests, B, L, C, M, F);
     //then
-    assertThat(pair.fail(), everyInt(numTests));
+    assertThat(pair.fail(), everyInt(equalTo(numTests)));
   }
 
 }

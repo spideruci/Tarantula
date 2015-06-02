@@ -50,6 +50,7 @@
 			<groupId>org.spideruci.hamcrest</groupId>
 			<artifactId>primitive-hamcrest</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

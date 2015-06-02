@@ -1,4 +1,7 @@
 # Tarantula
+[![Build Status](https://travis-ci.org/inf295uci-2015/Tarantula.svg?branch=master)](https://travis-ci.org/inf295uci-2015/Tarantula)
+[![Coverage Status](https://coveralls.io/repos/inf295uci-2015/Tarantula/badge.svg?branch=master)](https://coveralls.io/r/inf295uci-2015/Tarantula?branch=master)
+
 Code relevant to the Tarantula fault-localization metrics computation
 
 ## Installation Instructions for Tacoco and Primitive-Hamcrest

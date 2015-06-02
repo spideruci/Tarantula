@@ -32,7 +32,7 @@ public class TarantulaFaultLocalizerTest {
     fail("Not yet implemented");
   }
 
-  @Test
+  @Test @Ignore
   public void testCalculateSuspiciousnessAndConfidence() {
     fail("Not yet implemented");
   }

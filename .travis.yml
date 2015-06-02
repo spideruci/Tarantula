@@ -1,0 +1,18 @@
+language: java
+
+jdk: 
+- oraclejdk8
+- oraclejdk7
+
+before_install:
+- git clone https://github.com/inf295uci-2015/primitive-hamcrest.git  
+- cd primitive-hamcrest  
+- mvn install -Dmaven.compiler.source="1.7"  -Dmaven.compiler.target="1.7"
+- cd ..
+- git clone https://github.com/inf295uci-2015/tacoco.git
+- cd tacoco
+- mvn install -Dmaven.compiler.source="1.7"  -Dmaven.compiler.target="1.7"
+- cd ..
+
+after_success:
+- mvn clean test jacoco:report coveralls:report

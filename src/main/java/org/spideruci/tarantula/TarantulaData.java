@@ -148,7 +148,7 @@ public class TarantulaData implements Externalizable {
 		this.M = M;
 
 		numOrigTests = M.length;
-		numStmts = M[0].length;
+		numStmts = numOrigTests == 0 ? 0 : M[0].length;
 
 		// initialize so that all test cases are live
 		L = new boolean[numOrigTests];

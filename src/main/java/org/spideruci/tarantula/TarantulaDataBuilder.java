@@ -5,6 +5,8 @@ import org.spideruci.tacoco.reporting.data.CoverageMatrix;
 public class TarantulaDataBuilder {
   
   public static TarantulaData buildFromCoverageMatrix(CoverageMatrix matrix) {
+    if(matrix == null) return null;
+    
     boolean[][] M = matrix.toBooleanMatrix();
     TarantulaData data = new TarantulaData(M);
     

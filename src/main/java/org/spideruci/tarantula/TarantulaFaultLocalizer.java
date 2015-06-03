@@ -2,8 +2,6 @@ package org.spideruci.tarantula;
 
 public class TarantulaFaultLocalizer {
   
-  public static final int PASS = 0;
-  public static final int FAIL = 1;
   public static final int SUSPICIOUSNESS = 0;
   public static final int CONFIDENCE = 1;
   
@@ -26,24 +24,17 @@ public class TarantulaFaultLocalizer {
     boolean[] B = data.getB();
     PassFailPair<Integer> totalLiveTests = 
         calculateTotalLiveFailAndPass(numOrigTests, B, L, F);
-    int totalLivePass = totalLiveTests.pass();
-    int totalLiveFail = totalLiveTests.fail();
     
     boolean[] C = data.getC();
-    PassFailPair<int[]> passAndFailOnStmt = 
+    PassFailPair<int[]> testsOnStmtProfiles = 
         calculatePassOnStmtAndFailOnStmt(numStmts, numOrigTests, B, L, C, M, F);
-    int[] passOnStmt = passAndFailOnStmt.pass();
-    int[] failOnStmt = passAndFailOnStmt.fail();
     
-    PassFailPair<double[]> passAndFailRatio = 
-        calculatePassRatioAndFailRatio(
-            numStmts, totalLiveFail, totalLiveFail, passOnStmt, failOnStmt);
-    double[] passRatio = passAndFailRatio.pass();
-    double[] failRatio = passAndFailRatio.fail();
+    PassFailPair<double[]> testRatiosOnStmts = 
+        calculateTestRatiosOnStmts(numStmts, totalLiveTests, testsOnStmtProfiles);
     
     double[][] suspiciousnessAndConfidence = 
         calculateSuspiciousnessAndConfidence(
-            numStmts, totalLivePass, totalLiveFail, passRatio, failRatio);
+            numStmts, totalLiveTests, testRatiosOnStmts);
 
     return suspiciousnessAndConfidence;
   }
@@ -117,9 +108,19 @@ public class TarantulaFaultLocalizer {
     
     return new PassFailPair<int[]>(passOnStmt, failOnStmt);
   }
+  
+  PassFailPair<double[]> calculateTestRatiosOnStmts(
+      int numStmts, PassFailPair<Integer> totalLiveTests, 
+      PassFailPair<int[]> testsOnStmtProfiles) {
+    
+    return calculatePassRatioAndFailRatio(numStmts,
+        totalLiveTests.pass(), totalLiveTests.fail(),
+        testsOnStmtProfiles.pass(), testsOnStmtProfiles.fail());
+  }
 
   PassFailPair<double[]> calculatePassRatioAndFailRatio(
-      int numStmts, int totalLivePass, int totalLiveFail,
+      int numStmts, 
+      int totalLivePass, int totalLiveFail,
       int[] passOnStmt, int[] failOnStmt) {
 
     double[] passRatio = new double[numStmts];
@@ -144,6 +145,17 @@ public class TarantulaFaultLocalizer {
     }
     
     return new PassFailPair<double[]>(passRatio, failRatio);
+  }
+  
+  double[][] calculateSuspiciousnessAndConfidence(
+      int numStmts, 
+      PassFailPair<Integer> totalLiveTests,
+      PassFailPair<double[]> testRatiosOnStmts) {
+    
+    return calculateSuspiciousnessAndConfidence(
+        numStmts, 
+        totalLiveTests.pass(), totalLiveTests.fail(), 
+        testRatiosOnStmts.pass(), testRatiosOnStmts.fail());
   }
 
   double[][] calculateSuspiciousnessAndConfidence(

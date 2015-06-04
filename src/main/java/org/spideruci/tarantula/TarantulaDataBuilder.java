@@ -1,6 +1,6 @@
 package org.spideruci.tarantula;
 
-import org.spideruci.tacoco.reporting.data.CoverageMatrix;
+import org.spideruci.tacoco.coverage.CoverageMatrix;
 
 public class TarantulaDataBuilder {
   

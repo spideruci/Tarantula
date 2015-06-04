@@ -7,8 +7,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.spideruci.tacoco.coverage.CoverageMatrix;
 import org.spideruci.tacoco.reporting.CoverageJsonReader;
-import org.spideruci.tacoco.reporting.data.CoverageMatrix;
 import org.spideruci.tacoco.reporting.data.SourceFileCoverage.LineCoverageFormat;
 
 import com.google.gson.stream.JsonReader;

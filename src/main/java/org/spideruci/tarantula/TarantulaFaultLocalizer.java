@@ -68,7 +68,7 @@ public class TarantulaFaultLocalizer {
         totalLivePass++;
       }
     }
-    return new PassFailPair<Integer>( totalLivePass, totalLiveFail );
+    return new PassFailPair<Integer>(totalLivePass, totalLiveFail);
   }
 
   PassFailPair<Integer> calculateOrigFailAndPass(

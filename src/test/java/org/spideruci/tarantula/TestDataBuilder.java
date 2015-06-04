@@ -6,7 +6,7 @@ import static org.hamcrest.core.IsEqual.*;
 import static org.spideruci.hamcrest.primitive.EveryBool.everyBool;
 
 import org.junit.Test;
-import org.spideruci.tacoco.reporting.data.CoverageMatrix;
+import org.spideruci.tacoco.coverage.CoverageMatrix;
 
 public class TestDataBuilder {
 
